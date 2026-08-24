@@ -1,0 +1,6 @@
+{
+  "name": "IFAME Consulting",
+  "description": "Management, technology, and process consulting for organizations navigating change.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
