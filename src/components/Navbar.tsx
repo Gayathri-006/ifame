@@ -411,17 +411,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             </AnimatePresence>
           </div>
 
-          {/* Team */}
-          <button
-            onClick={() => scrollToSection('team')}
-            className={`px-3 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
-              isHome && activeSection === 'team' ? 'text-[#0055d4] font-semibold' : ''
-            }`}
-            id="nav-link-team"
-          >
-            Our Team
-          </button>
-
           {/* Alliances */}
           <button
             onClick={() => scrollToSection('partners')}
@@ -526,13 +515,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="text-left font-semibold text-slate-800 text-[15px] py-2 border-b border-slate-100 hover:text-[#0055d4]"
               >
                 Capabilities & Expertise
-              </button>
-
-              <button
-                onClick={() => scrollToSection('team')}
-                className="text-left font-semibold text-slate-800 text-[15px] py-2 border-b border-slate-100 hover:text-[#0055d4]"
-              >
-                Leadership & Expert Team
               </button>
 
               <button

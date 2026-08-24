@@ -5,7 +5,6 @@ import { WhatWeDoSection } from './components/WhatWeDoSection';
 import { ExpertiseStrip } from './components/ExpertiseStrip';
 import { IndustriesAndInsightsSection } from './components/IndustriesAndInsightsSection';
 import { CaseStudySection } from './components/CaseStudySection';
-import { TeamSection } from './components/TeamSection';
 import { InsightsEditorialSection } from './components/InsightsEditorialSection';
 import { PartnersSection } from './components/PartnersSection';
 import { FinalCTASection } from './components/FinalCTASection';
@@ -164,16 +163,13 @@ export default function App() {
         {/* 6. Case Studies / Client Impact Section (Challenge -> Approach -> Transformation -> Outcome) */}
         <CaseStudySection onContactUs={() => handleOpenContact('Case Study Strategy Session')} />
 
-        {/* 7. Leadership & Expert Team Section */}
-        <TeamSection onContactTeamMember={(member) => handleOpenContact(`Strategic Advisory with ${member.name} (${member.role})`)} />
-
-        {/* 9. Our Partners / Alliances Section */}
+        {/* 7. Our Partners / Alliances Section */}
         <PartnersSection />
 
-        {/* 10. Thought Leadership / Insights & Perspectives Editorial Section */}
+        {/* 8. Thought Leadership / Insights & Perspectives Editorial Section */}
         <InsightsEditorialSection onSelectArticle={handleSelectArticle} />
 
-        {/* 11. Final CTA Section ("Let's discuss what's next.") */}
+        {/* 9. Final CTA Section ("Let's discuss what's next.") */}
         <FinalCTASection onOpenContact={() => handleOpenContact('Direct Consultation Request')} />
       </main>
 
