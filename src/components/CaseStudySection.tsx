@@ -43,7 +43,7 @@ export const CaseStudySection: React.FC<CaseStudySectionProps> = ({ onContactUs 
               Delivering Measurable Enterprise Outcomes
             </h2>
             <p className="text-slate-500 text-sm md:text-base mt-3 max-w-2xl">
-              How our integrated management, technology, and process consulting disciplines translate complexity into strategic advantage.
+              How our integrated Management, Technology &  Business Consulting disciplines translate complexity into strategic advantage.
             </p>
           </div>
 

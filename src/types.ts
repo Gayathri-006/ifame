@@ -74,7 +74,7 @@ export const CONSULTING_PILLARS: ConsultingPillar[] = [
   {
     id: 'Business',
     title: 'Business Consulting',
-    shortDesc: 'Optimizing processes, Governance and Systems to build resilient, compliant and future-ready organizations.',
+    shortDesc: 'Optimizing Business, Governance and Systems to build resilient, compliant and future-ready organizations.',
     fullDesc: 'Eliminating operational friction and engineering sustainable, standardized workflows. We modernize legacy systems, implement stringent ISO & GRC frameworks, and align process architecture with business agility.',
     iconName: 'Network',
     primaryFocus: [
