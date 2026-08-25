@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronDown, ArrowRight, ArrowLeft, Menu, X } from 'lucide-react';
+import { ChevronDown, ArrowRight, ArrowLeft } from 'lucide-react';
 import { Logo } from './Logo';
 import { INDUSTRIES } from '../data/industries';
 import { ConsultingPillarId } from '../types';
 
 interface NavbarProps {
-  onOpenContact: () => void;
   onSelectPillar: (pillarId: ConsultingPillarId) => void;
   onSelectCapability: (capId: string) => void;
   onSelectIndustry: (indId: string) => void;
   onNavigate: (page: string) => void;
-  /** Which page is currently rendered. Defaults to 'home'. */
   currentPage?: string;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
-  onOpenContact,
   onSelectPillar,
   onSelectCapability,
   onSelectIndustry,
@@ -26,24 +23,38 @@ export const Navbar: React.FC<NavbarProps> = ({
   const isHome = currentPage === 'home';
 
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<'industries' | null>(null);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<'industries' | null>(
+    null
+  );
   const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
-    if (!isHome) return; // section spy only makes sense on the home page
+    if (!isHome) return;
 
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
 
-      const sections = ['home', 'who-we-are', 'core-pillars', 'industries', 'our-ecosystem', 'partners', 'insights'];
+      const sections = [
+        'home',
+        'who-we-are',
+        'vision',
+        'mission',
+        'core-pillars',
+        'industries',
+        'our-ecosystem',
+        'partners',
+        'insights',
+      ];
+
       const scrollPos = window.scrollY + 140;
 
       for (const section of sections) {
         const el = document.getElementById(section);
+
         if (el) {
           const top = el.offsetTop;
           const height = el.offsetHeight;
+
           if (scrollPos >= top && scrollPos < top + height) {
             setActiveSection(section);
             break;
@@ -53,45 +64,65 @@ export const Navbar: React.FC<NavbarProps> = ({
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, [isHome]);
 
   useEffect(() => {
-    // On any non-home page, treat the header as "scrolled" style (compact, shadowed)
-    if (!isHome) setIsScrolled(true);
+    if (!isHome) {
+      setIsScrolled(true);
+    }
   }, [isHome]);
 
-  // The single click handler every nav item funnels through.
-  // On the home page it scrolls directly. On any other page it
-  // reports the target section id to the parent (which navigates home,
-  // e.g. via history.back() for the AgTech page), then polls for that
-  // section to exist in the DOM and scrolls once it mounts.
-  // Scrolls to a section while compensating for the fixed navbar height,
-  // so the top of the target section (e.g. its eyebrow label) doesn't end
-  // up hidden underneath the header.
+  /*
+   * Scroll to a section while accounting for
+   * the fixed navbar height.
+   */
   const scrollToWithOffset = (el: HTMLElement) => {
     const header = document.getElementById('main-navigation-bar');
+
     const headerHeight = header ? header.offsetHeight : 80;
-    const extraGap = 16; // small breathing room below the header
-    const top = el.getBoundingClientRect().top + window.scrollY - headerHeight - extraGap;
-    window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
+    const extraGap = 16;
+
+    const top =
+      el.getBoundingClientRect().top +
+      window.scrollY -
+      headerHeight -
+      extraGap;
+
+    window.scrollTo({
+      top: Math.max(top, 0),
+      behavior: 'smooth',
+    });
   };
 
+  /*
+   * Main navigation scroll handler.
+   */
   const scrollToSection = (sectionId: string) => {
     setActiveDropdown(null);
-    setMobileMenuOpen(false);
 
     if (isHome) {
       const el = document.getElementById(sectionId);
-      if (el) scrollToWithOffset(el);
+
+      if (el) {
+        scrollToWithOffset(el);
+      }
+
       return;
     }
 
     onNavigate(sectionId);
+
     let attempts = 0;
+
     const tryScroll = () => {
       const el = document.getElementById(sectionId);
+
       if (el) {
         scrollToWithOffset(el);
       } else if (attempts < 30) {
@@ -99,20 +130,8 @@ export const Navbar: React.FC<NavbarProps> = ({
         requestAnimationFrame(tryScroll);
       }
     };
-    requestAnimationFrame(tryScroll);
-  };
 
-  // Wraps callbacks like onSelectPillar that aren't tied to a DOM id —
-  // if we're not on home, hop home first, then fire the callback.
-  const runOnHome = (action: () => void) => {
-    setActiveDropdown(null);
-    setMobileMenuOpen(false);
-    if (isHome) {
-      action();
-      return;
-    }
-    onNavigate('home');
-    setTimeout(action, 80);
+    requestAnimationFrame(tryScroll);
   };
 
   return (
@@ -124,7 +143,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           : 'border-b border-slate-100/80 py-[7px]'
       }`}
     >
-      {/* Back arrow — only shown on non-home pages, pinned to the true left edge */}
+      {/* Back arrow — only shown on non-home pages */}
       {!isHome && (
         <button
           type="button"
@@ -137,8 +156,13 @@ export const Navbar: React.FC<NavbarProps> = ({
         </button>
       )}
 
-      <div className="relative max-w-7xl mx-auto px-6 md:px-8 flex items-center justify-between">
-        {/* Left: Brand Logo — same position/size on every page */}
+      {/* =========================================================
+          MAIN NAVBAR CONTAINER
+          Logo stays on the left.
+          Navigation stays centered.
+         ========================================================= */}
+      <div className="relative max-w-7xl mx-auto px-6 md:px-8 flex items-center">
+        {/* ================= LOGO ================= */}
         <button
           onClick={() => scrollToSection('home')}
           className="cursor-pointer focus:outline-none flex items-center"
@@ -148,45 +172,110 @@ export const Navbar: React.FC<NavbarProps> = ({
           <Logo variant="light" size="md" />
         </button>
 
-        {/* Center: Desktop Nav Items */}
-        <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2 text-[14.5px] font-medium text-slate-700">
-          {/* Home */}
+        {/* ================= DESKTOP NAVIGATION ================= */}
+        <nav className="hidden lg:flex absolute left-1/2 -translate-x-1/2 items-center whitespace-nowrap space-x-1 xl:space-x-2 text-[14.5px] font-medium text-slate-700">
+
+          {/* ================= HOME ================= */}
           <button
             onClick={() => scrollToSection('home')}
-            className={`relative px-3.5 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
-              isHome && activeSection === 'home' ? 'text-[#0055d4] font-semibold' : ''
+            className={`relative whitespace-nowrap px-3.5 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
+              isHome && activeSection === 'home'
+                ? 'text-[#0055d4] font-semibold'
+                : ''
             }`}
             id="nav-link-home"
           >
             Home
+
             {isHome && activeSection === 'home' && (
               <motion.div
                 layoutId="navUnderline"
                 className="absolute bottom-0 left-3.5 right-3.5 h-[2.5px] bg-[#0055d4] rounded-full"
-                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 400,
+                  damping: 30,
+                }}
               />
             )}
           </button>
 
-          {/* About Us */}
+          {/* ================= ABOUT US ================= */}
           <button
             onClick={() => scrollToSection('who-we-are')}
-            className={`relative px-3.5 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
-              isHome && activeSection === 'who-we-are' ? 'text-[#0055d4] font-semibold' : ''
+            className={`relative whitespace-nowrap min-w-[90px] px-3.5 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
+              isHome && activeSection === 'who-we-are'
+                ? 'text-[#0055d4] font-semibold'
+                : ''
             }`}
             id="nav-link-about-us"
           >
             About Us
+
             {isHome && activeSection === 'who-we-are' && (
               <motion.div
                 layoutId="navUnderline"
                 className="absolute bottom-0 left-3.5 right-3.5 h-[2.5px] bg-[#0055d4] rounded-full"
-                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 400,
+                  damping: 30,
+                }}
               />
             )}
           </button>
 
-          {/* Industries Dropdown (Enlarged Mega-Box) */}
+          {/* ================= VISION ================= */}
+          <button
+            onClick={() => scrollToSection('vision')}
+            className={`relative whitespace-nowrap px-3.5 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
+              isHome && activeSection === 'vision'
+                ? 'text-[#0055d4] font-semibold'
+                : ''
+            }`}
+            id="nav-link-vision"
+          >
+            Vision
+
+            {isHome && activeSection === 'vision' && (
+              <motion.div
+                layoutId="navUnderline"
+                className="absolute bottom-0 left-3.5 right-3.5 h-[2.5px] bg-[#0055d4] rounded-full"
+                transition={{
+                  type: 'spring',
+                  stiffness: 400,
+                  damping: 30,
+                }}
+              />
+            )}
+          </button>
+
+          {/* ================= MISSION ================= */}
+          <button
+            onClick={() => scrollToSection('mission')}
+            className={`relative whitespace-nowrap px-3.5 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
+              isHome && activeSection === 'mission'
+                ? 'text-[#0055d4] font-semibold'
+                : ''
+            }`}
+            id="nav-link-mission"
+          >
+            Mission
+
+            {isHome && activeSection === 'mission' && (
+              <motion.div
+                layoutId="navUnderline"
+                className="absolute bottom-0 left-3.5 right-3.5 h-[2.5px] bg-[#0055d4] rounded-full"
+                transition={{
+                  type: 'spring',
+                  stiffness: 400,
+                  damping: 30,
+                }}
+              />
+            )}
+          </button>
+
+          {/* ================= INDUSTRIES ================= */}
           <div
             className="relative"
             onMouseEnter={() => setActiveDropdown('industries')}
@@ -194,33 +283,60 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <button
               onClick={() => scrollToSection('industries')}
-              className={`flex items-center gap-1 px-3.5 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
-                isHome && activeSection === 'industries' ? 'text-[#0055d4] font-semibold' : ''
+              className={`flex items-center gap-1 whitespace-nowrap px-3.5 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
+                isHome && activeSection === 'industries'
+                  ? 'text-[#0055d4] font-semibold'
+                  : ''
               }`}
               id="nav-link-industries"
             >
               Industries
-              <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeDropdown === 'industries' ? 'rotate-180 text-[#0055d4]' : 'text-slate-400'}`} />
+
+              <ChevronDown
+                className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                  activeDropdown === 'industries'
+                    ? 'rotate-180 text-[#0055d4]'
+                    : 'text-slate-400'
+                }`}
+              />
             </button>
 
             <AnimatePresence>
               {activeDropdown === 'industries' && (
                 <motion.div
-                  initial={{ opacity: 0, y: 12, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 6, scale: 0.98 }}
-                  transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                  initial={{
+                    opacity: 0,
+                    y: 12,
+                    scale: 0.98,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                  }}
+                  exit={{
+                    opacity: 0,
+                    y: 6,
+                    scale: 0.98,
+                  }}
+                  transition={{
+                    duration: 0.22,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
                   className="absolute top-full left-1/2 -translate-x-1/2 w-[880px] bg-white rounded-2xl shadow-2xl shadow-slate-900/15 border border-slate-200/90 p-7 mt-1.5 z-50 overflow-hidden"
                 >
+                  {/* Dropdown Header */}
                   <div className="flex items-center justify-between pb-4 mb-5 border-b border-slate-100">
                     <div>
                       <span className="text-[10.5px] font-extrabold uppercase tracking-widest text-[#0055d4]">
                         SECTOR ADVISORY & ECOSYSTEMS
                       </span>
+
                       <h3 className="text-base font-extrabold text-slate-900 font-['Outfit',sans-serif]">
                         Specialized Industry Practices
                       </h3>
                     </div>
+
                     <button
                       onClick={() => scrollToSection('industries')}
                       className="text-xs font-bold text-[#0055d4] hover:text-[#003da0] flex items-center gap-1 cursor-pointer"
@@ -230,6 +346,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </button>
                   </div>
 
+                  {/* Industry Cards */}
                   <div className="grid grid-cols-3 gap-5">
                     {INDUSTRIES.map((ind) => (
                       <div
@@ -242,240 +359,171 @@ export const Navbar: React.FC<NavbarProps> = ({
                         id={`nav-ind-${ind.id}`}
                       >
                         <div>
+                          {/* Image */}
                           <div className="h-32 overflow-hidden relative">
                             <img
                               src={ind.imageUrl}
                               alt={ind.name}
                               className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
                             />
+
                             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-transparent" />
+
                             <div className="absolute top-2.5 left-2.5">
                               <span className="px-2 py-0.5 rounded-full text-[9.5px] font-extrabold bg-blue-600/90 text-white uppercase tracking-wider backdrop-blur-sm">
                                 Sector Vertical
                               </span>
                             </div>
+
                             <div className="absolute bottom-2.5 left-3 right-3">
                               <span className="text-sm font-extrabold text-white tracking-wide block font-['Outfit',sans-serif]">
                                 {ind.name}
                               </span>
+
                               <span className="text-[11px] text-blue-200/90 font-medium block truncate">
                                 {ind.tagline}
                               </span>
                             </div>
                           </div>
 
+                          {/* Description */}
                           <div className="p-3.5">
                             <p className="text-[11.5px] text-slate-600 line-clamp-2 leading-relaxed">
                               {ind.description}
                             </p>
+
                             <div className="flex flex-wrap gap-1 mt-3">
-                              {ind.focusAreas.slice(0, 2).map((focus, idx) => (
-                                <span
-                                  key={idx}
-                                  className="px-2 py-0.5 rounded bg-blue-50 text-blue-700 text-[10px] font-semibold"
-                                >
-                                  {focus}
-                                </span>
-                              ))}
+                              {ind.focusAreas
+                                .slice(0, 2)
+                                .map((focus, idx) => (
+                                  <span
+                                    key={idx}
+                                    className="px-2 py-0.5 rounded bg-blue-50 text-blue-700 text-[10px] font-semibold"
+                                  >
+                                    {focus}
+                                  </span>
+                                ))}
                             </div>
                           </div>
                         </div>
 
+                        {/* Card Footer */}
                         <div className="px-3.5 pb-3.5 pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
                           {ind.impactMetrics[0] && (
                             <span className="text-[11px] font-bold text-slate-700">
-                              {ind.impactMetrics[0].value} <span className="text-slate-400 font-normal">{ind.impactMetrics[0].label}</span>
+                              {ind.impactMetrics[0].value}{' '}
+                              <span className="text-slate-400 font-normal">
+                                {ind.impactMetrics[0].label}
+                              </span>
                             </span>
                           )}
+
                           <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#0055d4] group-hover:translate-x-1 transition-transform">
-                            Details <ArrowRight className="w-3 h-3" />
+                            Details
+                            <ArrowRight className="w-3 h-3" />
                           </span>
                         </div>
                       </div>
                     ))}
                   </div>
 
+                  {/* Dropdown Footer */}
                   <div className="mt-5 pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 bg-slate-50/80 -mx-7 -mb-7 px-7 py-3">
                     <div className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                      <span>Dedicated practice groups with deep sovereign compliance & regulatory alignment.</span>
+
+                      <span>
+                        Dedicated practice groups with deep sovereign
+                        compliance & regulatory alignment.
+                      </span>
                     </div>
-                    <span className="font-semibold text-slate-700">ISO 27001 & CMMI Level 5 Certified</span>
+
+                    <span className="font-semibold text-slate-700">
+                      ISO 27001 & CMMI Level 5 Certified
+                    </span>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
-          {/* Values */}
+          {/* ================= VALUES ================= */}
           <button
             onClick={() => scrollToSection('core-pillars')}
-            className={`relative px-3.5 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
-              isHome && activeSection === 'core-pillars' ? 'text-[#0055d4] font-semibold' : ''
+            className={`relative whitespace-nowrap px-3.5 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
+              isHome && activeSection === 'core-pillars'
+                ? 'text-[#0055d4] font-semibold'
+                : ''
             }`}
             id="nav-link-values"
           >
             Values
+
             {isHome && activeSection === 'core-pillars' && (
               <motion.div
                 layoutId="navUnderline"
                 className="absolute bottom-0 left-3.5 right-3.5 h-[2.5px] bg-[#0055d4] rounded-full"
-                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 400,
+                  damping: 30,
+                }}
               />
             )}
           </button>
 
-          {/* Our Ecosystem */}
+          {/* ================= OUR ECOSYSTEM ================= */}
           <button
             onClick={() => scrollToSection('our-ecosystem')}
-            className={`relative px-3.5 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
-              isHome && activeSection === 'our-ecosystem' ? 'text-[#0055d4] font-semibold' : ''
+            className={`relative whitespace-nowrap px-3.5 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
+              isHome && activeSection === 'our-ecosystem'
+                ? 'text-[#0055d4] font-semibold'
+                : ''
             }`}
             id="nav-link-ecosystem"
           >
             Our Ecosystem
+
             {isHome && activeSection === 'our-ecosystem' && (
               <motion.div
                 layoutId="navUnderline"
                 className="absolute bottom-0 left-3.5 right-3.5 h-[2.5px] bg-[#0055d4] rounded-full"
-                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 400,
+                  damping: 30,
+                }}
               />
             )}
           </button>
 
-          {/* Alliances */}
+          {/* ================= ALLIANCES ================= */}
           <button
             onClick={() => scrollToSection('partners')}
-            className={`px-3 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
-              isHome && activeSection === 'partners' ? 'text-[#0055d4] font-semibold' : ''
+            className={`relative whitespace-nowrap px-3 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
+              isHome && activeSection === 'partners'
+                ? 'text-[#0055d4] font-semibold'
+                : ''
             }`}
             id="nav-link-alliances"
           >
             Alliances
           </button>
 
-          {/* Insights */}
+          {/* ================= INSIGHTS ================= */}
           <button
             onClick={() => scrollToSection('insights')}
-            className={`px-3 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
-              isHome && activeSection === 'insights' ? 'text-[#0055d4] font-semibold' : ''
+            className={`relative whitespace-nowrap px-3 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
+              isHome && activeSection === 'insights'
+                ? 'text-[#0055d4] font-semibold'
+                : ''
             }`}
             id="nav-link-insights"
           >
             Insights
           </button>
-
         </nav>
-
-        {/* Right: Contact Button & Hamburger */}
-        <div className="flex items-center gap-3.5">
-          <button
-            onClick={onOpenContact}
-            className="hidden sm:inline-flex items-center justify-center px-5 py-2 rounded-full bg-[#0a0a0a] hover:bg-[#000000] text-white text-[13.5px] font-semibold tracking-wide shadow-sm hover:shadow transition-all duration-200 active:scale-[0.98] cursor-pointer"
-            id="nav-contact-btn"
-          >
-            Contact Us
-          </button>
-
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors focus:outline-none cursor-pointer"
-            aria-label="Toggle Navigation Menu"
-            id="nav-hamburger-btn"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
       </div>
-
-      {/* Mobile Drawer / Responsive Menu Overlay */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25 }}
-            className="lg:hidden bg-white border-b border-slate-200 px-6 py-6 overflow-hidden shadow-xl"
-            id="mobile-navigation-drawer"
-          >
-            <div className="flex flex-col space-y-4">
-              <button
-                onClick={() => scrollToSection('home')}
-                className="text-left font-semibold text-slate-800 text-[15px] py-2 border-b border-slate-100 hover:text-[#0055d4]"
-              >
-                Home
-              </button>
-
-              <button
-                onClick={() => scrollToSection('who-we-are')}
-                className="text-left font-semibold text-slate-800 text-[15px] py-2 border-b border-slate-100 hover:text-[#0055d4]"
-              >
-                About Us
-              </button>
-
-              <div>
-                <div className="text-xs uppercase font-bold tracking-wider text-slate-400 mb-2">Industries</div>
-                <div className="space-y-2 pl-2">
-                  {INDUSTRIES.map((ind) => (
-                    <button
-                      key={ind.id}
-                      onClick={() => {
-                        setMobileMenuOpen(false);
-                        onSelectIndustry(ind.id);
-                      }}
-                      className="w-full text-left text-sm font-medium text-slate-700 hover:text-[#0055d4] py-1 flex items-center justify-between"
-                    >
-                      <span>{ind.name}</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <button
-                onClick={() => scrollToSection('core-pillars')}
-                className="text-left font-semibold text-slate-800 text-[15px] py-2 border-b border-slate-100 hover:text-[#0055d4]"
-              >
-                Values
-              </button>
-
-              <button
-                onClick={() => scrollToSection('our-ecosystem')}
-                className="text-left font-semibold text-slate-800 text-[15px] py-2 border-b border-slate-100 hover:text-[#0055d4]"
-              >
-                Our Ecosystem
-              </button>
-
-              <button
-                onClick={() => scrollToSection('partners')}
-                className="text-left font-semibold text-slate-800 text-[15px] py-2 border-b border-slate-100 hover:text-[#0055d4]"
-              >
-                Alliances
-              </button>
-
-              <button
-                onClick={() => scrollToSection('insights')}
-                className="text-left font-semibold text-slate-800 text-[15px] py-2 border-b border-slate-100 hover:text-[#0055d4]"
-              >
-                Insights & Perspectives
-              </button>
-
-              <div className="pt-3">
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    onOpenContact();
-                  }}
-                  className="w-full py-3 rounded-full bg-[#0a0a0a] text-white font-semibold text-center text-sm shadow-md hover:bg-[#000000] transition-colors"
-                >
-                  Contact IFAME Consulting
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </header>
   );
 };

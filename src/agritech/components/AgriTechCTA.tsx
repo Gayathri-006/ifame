@@ -9,7 +9,7 @@ interface AgriTechCTAProps {
 
 export const AgriTechCTA: React.FC<AgriTechCTAProps> = ({ onContactClick }) => {
   return (
-    <section className="relative py-28 bg-[#091b10] text-white overflow-hidden">
+    <section className="relative py-28 bg-[#0a1620] text-white overflow-hidden">
       {/* Background Image with Cinematic Overlay */}
       <div className="absolute inset-0 z-0">
         <img
@@ -18,9 +18,10 @@ export const AgriTechCTA: React.FC<AgriTechCTAProps> = ({ onContactClick }) => {
           referrerPolicy="no-referrer"
           className="w-full h-full object-cover object-center"
         />
-        {/* Dark Emerald & Vignette Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#04120a]/95 via-[#061c0e]/85 to-[#04120a]/85" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0b1b13] via-transparent to-black/40" />
+
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a1620]/95 via-[#0a1620]/85 to-[#0a1620]/85" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a1620] via-transparent to-[#0a1620]/40" />
       </div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -53,7 +54,7 @@ export const AgriTechCTA: React.FC<AgriTechCTAProps> = ({ onContactClick }) => {
               type="button"
               id="cta-talk-to-experts-btn"
               onClick={onContactClick}
-              className="group inline-flex items-center space-x-3 bg-[#548a27] hover:bg-[#629f2e] text-white px-8 py-4 rounded-xl text-base font-bold shadow-2xl shadow-black/60 hover:shadow-emerald-900/50 border border-[#6ea936] transition-all duration-200 cursor-pointer"
+              className="group inline-flex items-center space-x-3 bg-[#548a27] hover:bg-[#629f2e] text-white px-8 py-4 rounded-xl text-base font-bold shadow-2xl shadow-[#0a1620]/60 hover:shadow-emerald-900/50 border border-[#6ea936] transition-all duration-200 cursor-pointer"
             >
               <span>Talk to Our Experts</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -66,10 +67,12 @@ export const AgriTechCTA: React.FC<AgriTechCTAProps> = ({ onContactClick }) => {
               <span className="w-1.5 h-1.5 rounded-full bg-[#84d94b]" />
               <span>Independent Technology Advisory</span>
             </div>
+
             <div className="flex items-center space-x-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#84d94b]" />
               <span>Tailored Implementation Roadmaps</span>
             </div>
+
             <div className="flex items-center space-x-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#84d94b]" />
               <span>Global Agri-Food Subject Matter Experts</span>

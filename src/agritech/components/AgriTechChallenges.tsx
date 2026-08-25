@@ -40,24 +40,27 @@ export const AgriTechChallenges: React.FC = () => {
   const renderIcon = (iconName: string) => {
     switch (iconName) {
       case 'thermometer':
-        return <ThermometerSun className="w-7 h-7 text-stone-900" />;
+        return <ThermometerSun className="w-7 h-7 text-[#0a1620]" />;
       case 'droplets':
-        return <Droplets className="w-7 h-7 text-stone-900" />;
+        return <Droplets className="w-7 h-7 text-[#0a1620]" />;
       case 'database':
-        return <Database className="w-7 h-7 text-stone-900" />;
+        return <Database className="w-7 h-7 text-[#0a1620]" />;
       case 'trending':
-        return <TrendingUp className="w-7 h-7 text-stone-900" />;
+        return <TrendingUp className="w-7 h-7 text-[#0a1620]" />;
       case 'truck':
-        return <Truck className="w-7 h-7 text-stone-900" />;
+        return <Truck className="w-7 h-7 text-[#0a1620]" />;
       default:
-        return <ShieldAlert className="w-7 h-7 text-stone-900" />;
+        return <ShieldAlert className="w-7 h-7 text-[#0a1620]" />;
     }
   };
 
   return (
-    <section id="challenges-section" className="py-20 bg-[#ffffff] border-b border-stone-200">
+    <section
+      id="challenges-section"
+      className="py-20 bg-[#ffffff] border-b border-stone-200"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
           <motion.div
@@ -66,12 +69,14 @@ export const AgriTechChallenges: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <span className="text-xs sm:text-sm font-bold tracking-widest uppercase text-white bg-stone-900 px-3.5 py-1 rounded-full border border-stone-900 inline-block mb-3 shadow-sm">
+            <span className="text-xs sm:text-sm font-bold tracking-widest uppercase text-white bg-[#0a1620] px-3.5 py-1 rounded-full border border-[#0a1620] inline-block mb-3 shadow-sm">
               THE CHALLENGE
             </span>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-stone-900 tracking-tight leading-tight mb-3">
+
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0a1620] tracking-tight leading-tight mb-3">
               Agriculture Is Facing a New Generation of Challenges
             </h2>
+
             <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
               Global pressures and local realities require a new approach to agricultural transformation.
             </p>
@@ -96,7 +101,7 @@ export const AgriTechChallenges: React.FC = () => {
               </div>
 
               {/* Title */}
-              <h3 className="text-base font-bold text-stone-900 mb-2.5 group-hover:text-stone-900 transition-colors">
+              <h3 className="text-base font-bold text-[#0a1620] mb-2.5 group-hover:text-[#0a1620] transition-colors">
                 {challenge.title}
               </h3>
 
@@ -117,8 +122,10 @@ export const AgriTechChallenges: React.FC = () => {
           className="mt-10 bg-[#ffffff] border border-[#e2e2e2] rounded-2xl p-4 sm:p-5 text-center max-w-4xl mx-auto shadow-sm"
         >
           <div className="flex items-center justify-center space-x-2 text-stone-800 font-semibold text-sm sm:text-base">
-            <Sparkles className="w-4 h-4 text-stone-900 shrink-0" />
-            <span>We help organizations turn these challenges into opportunities through technology-led agricultural transformation.</span>
+            <Sparkles className="w-4 h-4 text-[#0a1620] shrink-0" />
+            <span>
+              We help organizations turn these challenges into opportunities through technology-led agricultural transformation.
+            </span>
           </div>
         </motion.div>
 

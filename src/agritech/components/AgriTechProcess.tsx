@@ -40,24 +40,27 @@ export const AgriTechProcess: React.FC = () => {
   const renderIcon = (name: string) => {
     switch (name) {
       case 'target':
-        return <Target className="w-6 h-6 text-stone-900" />;
+        return <Target className="w-6 h-6 text-[#0a1620]" />;
       case 'search':
-        return <Search className="w-6 h-6 text-stone-900" />;
+        return <Search className="w-6 h-6 text-[#0a1620]" />;
       case 'roadmap':
-        return <FileText className="w-6 h-6 text-stone-900" />;
+        return <FileText className="w-6 h-6 text-[#0a1620]" />;
       case 'implement':
-        return <Layers className="w-6 h-6 text-stone-900" />;
+        return <Layers className="w-6 h-6 text-[#0a1620]" />;
       case 'scale':
-        return <TrendingUp className="w-6 h-6 text-stone-900" />;
+        return <TrendingUp className="w-6 h-6 text-[#0a1620]" />;
       default:
-        return <Target className="w-6 h-6 text-stone-900" />;
+        return <Target className="w-6 h-6 text-[#0a1620]" />;
     }
   };
 
   return (
-    <section id="process-section" className="py-20 bg-[#ffffff] border-b border-stone-200 overflow-hidden">
+    <section
+      id="process-section"
+      className="py-20 bg-[#ffffff] border-b border-stone-200 overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <motion.div
@@ -66,12 +69,14 @@ export const AgriTechProcess: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <span className="text-xs sm:text-sm font-bold tracking-widest uppercase text-white bg-stone-900 px-3.5 py-1 rounded-full border border-stone-900 inline-block mb-3 shadow-sm">
+            <span className="text-xs sm:text-sm font-bold tracking-widest uppercase text-white bg-[#0a1620] px-3.5 py-1 rounded-full border border-[#0a1620] inline-block mb-3 shadow-sm">
               HOW WE WORK
             </span>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-stone-900 tracking-tight leading-tight mb-3">
+
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0a1620] tracking-tight leading-tight mb-3">
               A Collaborative Process. Measurable Impact.
             </h2>
+
             <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
               From initial baseline assessment to enterprise-scale deployment and continuous performance optimization.
             </p>
@@ -80,7 +85,7 @@ export const AgriTechProcess: React.FC = () => {
 
         {/* 5 Stages Process Flow */}
         <div className="relative">
-          
+
           {/* Connecting dashed line for large screens */}
           <div className="hidden lg:block absolute top-10 left-[8%] right-[8%] h-0.5 border-t-2 border-dashed border-stone-300 z-0" />
 
@@ -99,6 +104,7 @@ export const AgriTechProcess: React.FC = () => {
                   <div className="w-20 h-20 rounded-full bg-white border-2 border-[#dfdfdf] flex items-center justify-center shadow-md group-hover:scale-110 group-hover:bg-[#ffffff] group-hover:border-[#8c8c8c] transition-all duration-300">
                     {renderIcon(stage.iconName)}
                   </div>
+
                   {/* Step arrow indicator */}
                   {idx < stages.length - 1 && (
                     <div className="hidden lg:block absolute -right-5 top-1/2 -translate-y-1/2 text-stone-400 z-20">
@@ -109,10 +115,11 @@ export const AgriTechProcess: React.FC = () => {
 
                 {/* Step badge & Title */}
                 <div className="flex items-center space-x-1.5 mb-2">
-                  <span className="text-xs font-mono font-bold text-stone-900 bg-[#ffffff] px-2 py-0.5 rounded border border-[#ededed]">
+                  <span className="text-xs font-mono font-bold text-[#0a1620] bg-[#ffffff] px-2 py-0.5 rounded border border-[#ededed]">
                     {stage.step}
                   </span>
-                  <h3 className="text-base font-bold text-stone-900 group-hover:text-stone-900 transition-colors">
+
+                  <h3 className="text-base font-bold text-[#0a1620] group-hover:text-[#0a1620] transition-colors">
                     {stage.title}
                   </h3>
                 </div>

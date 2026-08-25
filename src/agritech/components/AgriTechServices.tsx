@@ -1,5 +1,13 @@
 import React from 'react';
-import { Compass, Cpu, LineChart, Target, Wifi, Sprout, ArrowUpRight } from 'lucide-react';
+import {
+  Compass,
+  Cpu,
+  LineChart,
+  Target,
+  Wifi,
+  Sprout,
+  ArrowUpRight,
+} from 'lucide-react';
 import { motion } from 'motion/react';
 import { ServiceItem } from '../types';
 
@@ -59,7 +67,9 @@ interface AgriTechServicesProps {
   onServiceSelect?: (service: ServiceItem) => void;
 }
 
-export const AgriTechServices: React.FC<AgriTechServicesProps> = ({ onServiceSelect }) => {
+export const AgriTechServices: React.FC<AgriTechServicesProps> = ({
+  onServiceSelect,
+}) => {
   const renderIcon = (name: string) => {
     switch (name) {
       case 'strategy':
@@ -80,9 +90,12 @@ export const AgriTechServices: React.FC<AgriTechServicesProps> = ({ onServiceSel
   };
 
   return (
-    <section id="services-section" className="py-20 bg-[#ffffff] border-b border-stone-200">
+    <section
+      id="services-section"
+      className="py-20 bg-[#ffffff] border-b border-stone-200"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <motion.div
@@ -91,12 +104,14 @@ export const AgriTechServices: React.FC<AgriTechServicesProps> = ({ onServiceSel
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <span className="text-xs sm:text-sm font-bold tracking-widest uppercase text-white bg-stone-900 px-3.5 py-1 rounded-full border border-stone-900 inline-block mb-3 shadow-sm">
+            <span className="text-xs sm:text-sm font-bold tracking-widest uppercase text-white bg-[#0a1620] px-3.5 py-1 rounded-full border border-[#0a1620] inline-block mb-3 shadow-sm">
               OUR SERVICES
             </span>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-stone-900 tracking-tight leading-tight mb-3">
+
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0a1620] tracking-tight leading-tight mb-3">
               How We Help You Transform Agriculture
             </h2>
+
             <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
               Tailored consulting, technical architecture, and implementation frameworks across the agri-food spectrum.
             </p>
@@ -117,16 +132,16 @@ export const AgriTechServices: React.FC<AgriTechServicesProps> = ({ onServiceSel
               onClick={() => onServiceSelect?.(service)}
             >
               {/* Image Frame */}
-              <div className="relative h-56 w-full overflow-hidden bg-stone-900">
+              <div className="relative h-56 w-full overflow-hidden bg-[#0a1620]">
                 <img
                   src={service.image}
                   alt={service.title}
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
                 />
-                
+
                 {/* Dark & Green Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-950/75 via-stone-950/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a1620]/75 via-[#0a1620]/20 to-transparent" />
 
                 {/* Floating Icon Badge on bottom left of image */}
                 <div className="absolute bottom-3 left-4 w-10 h-10 rounded-xl bg-[#4b4b4b]/90 backdrop-blur-md border border-[#878787]/60 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#656565] transition-all">
@@ -134,7 +149,7 @@ export const AgriTechServices: React.FC<AgriTechServicesProps> = ({ onServiceSel
                 </div>
 
                 {/* Subtle top right hover indicator */}
-                <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/40 backdrop-blur-md text-white/80 flex items-center justify-center opacity-0 group-hover:opacity-100 group-hover:text-white transition-opacity">
+                <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-[#0a1620]/40 backdrop-blur-md text-white/80 flex items-center justify-center opacity-0 group-hover:opacity-100 group-hover:text-white transition-opacity">
                   <ArrowUpRight className="w-4 h-4" />
                 </div>
               </div>
@@ -142,15 +157,16 @@ export const AgriTechServices: React.FC<AgriTechServicesProps> = ({ onServiceSel
               {/* Card Body */}
               <div className="p-6 flex-1 flex flex-col justify-between bg-white">
                 <div>
-                  <h3 className="text-lg font-bold text-stone-900 mb-2 group-hover:text-stone-900 transition-colors">
+                  <h3 className="text-lg font-bold text-[#0a1620] mb-2 group-hover:text-[#0a1620] transition-colors">
                     {service.title}
                   </h3>
+
                   <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
                     {service.description}
                   </p>
                 </div>
 
-                <div className="pt-4 mt-2 border-t border-stone-100 flex items-center text-xs font-semibold text-stone-900 group-hover:text-stone-900">
+                <div className="pt-4 mt-2 border-t border-stone-100 flex items-center text-xs font-semibold text-[#0a1620] group-hover:text-[#0a1620]">
                   <span>Explore Service Framework</span>
                   <ArrowUpRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </div>

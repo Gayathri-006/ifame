@@ -8,7 +8,10 @@ interface AgriTechHeroProps {
   onContactClick: () => void;
 }
 
-export const AgriTechHero: React.FC<AgriTechHeroProps> = ({ onExploreClick, onContactClick }) => {
+export const AgriTechHero: React.FC<AgriTechHeroProps> = ({
+  onExploreClick,
+  onContactClick,
+}) => {
   return (
     <section className="relative min-h-[540px] sm:min-h-[580px] lg:min-h-[620px] flex items-center bg-white overflow-hidden border-b border-slate-200">
       {/* Background Image: Bright daytime crop field with hovering drone under soft white/pale blue sky */}
@@ -19,16 +22,17 @@ export const AgriTechHero: React.FC<AgriTechHeroProps> = ({ onExploreClick, onCo
           referrerPolicy="no-referrer"
           className="w-full h-full object-cover object-right-top md:object-center opacity-90"
         />
-        
+
         {/* Soft, natural white gradient overlay on the left to ensure crisp text readability */}
         <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent md:w-3/4 lg:w-3/5" />
+
         <div className="absolute inset-0 bg-gradient-to-t from-white/50 via-transparent to-transparent" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          
-          {/* Left Hero Content - Clean White Neutral Styling with Sharp Slate/Black Typography */}
+
+          {/* Left Hero Content */}
           <div className="lg:col-span-8 space-y-6 text-left">
             <motion.div
               initial={{ opacity: 0, y: 18 }}
@@ -39,23 +43,35 @@ export const AgriTechHero: React.FC<AgriTechHeroProps> = ({ onExploreClick, onCo
               {/* Subtle Eyebrow Pill */}
               <div className="inline-flex items-center space-x-2 bg-white/95 border border-slate-200 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 shadow-xs backdrop-blur-md">
                 <Sparkles className="w-3.5 h-3.5 text-stone-900" />
-                <span className="tracking-wide text-slate-800">GLOBAL ADVISORY &amp; STRATEGY • AGRI-TECH</span>
+
+                <span className="tracking-wide text-slate-800">
+                  GLOBAL ADVISORY &amp; STRATEGY • AGRI-TECH
+                </span>
               </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-[50px] font-extrabold text-slate-950 tracking-tight leading-[1.12]">
-                Transforming Agriculture<br />
-                Through Technology,<br />
-                <span className="text-stone-900 inline-block font-extrabold">
-                  Data &amp; Intelligence.
-                </span>
+              {/* Hero Headline — same style throughout */}
+              <h1
+                className="text-3xl sm:text-4xl md:text-[42px] lg:text-[48px] font-semibold text-[#0a1620] tracking-[-0.01em] leading-[1.22] font-['Fraunces',serif]"
+                id="agritech-hero-main-heading"
+              >
+                Transforming Agriculture
+                <br />
+                Through Technology,
+                <br />
+                Data &amp; Intelligence.
               </h1>
 
-              <p className="text-sm sm:text-base lg:text-lg text-slate-600 font-normal leading-relaxed pt-1 max-w-xl">
-                Building smarter, more sustainable and resilient agricultural systems through science, technology, AI and data-driven transformation.
+              <p
+                className="text-sm sm:text-base lg:text-lg text-slate-600 font-normal leading-relaxed pt-1 max-w-xl"
+                id="agritech-hero-supporting-copy"
+              >
+                Building smarter, more sustainable and resilient agricultural
+                systems through science, technology, AI and data-driven
+                transformation.
               </p>
             </motion.div>
 
-            {/* Action Buttons with Clean Neutral IFAME Pill Styling */}
+            {/* Action Button */}
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
@@ -66,19 +82,11 @@ export const AgriTechHero: React.FC<AgriTechHeroProps> = ({ onExploreClick, onCo
                 type="button"
                 id="hero-explore-capabilities-btn"
                 onClick={onExploreClick}
-                className="group inline-flex items-center space-x-2 bg-[#191919] hover:bg-[#303030] text-white px-6 py-3 rounded-full text-xs sm:text-sm font-semibold shadow-sm hover:shadow-md transition-all cursor-pointer border border-[#505050]"
+                className="group inline-flex items-center space-x-2 bg-[#0a1620] hover:bg-[#061e24] text-white px-6 py-3 rounded-full text-xs sm:text-sm font-semibold shadow-sm hover:shadow-md transition-all cursor-pointer border border-[#0a1620]"
               >
                 <span>Explore Our Capabilities</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-              </button>
 
-              <button
-                type="button"
-                id="hero-talk-to-experts-btn"
-                onClick={onContactClick}
-                className="inline-flex items-center space-x-1.5 bg-white hover:bg-slate-50 text-slate-800 px-6 py-3 rounded-full text-xs sm:text-sm font-semibold border border-slate-300 hover:border-slate-400 shadow-2xs transition-all cursor-pointer"
-              >
-                <span>Talk to Our Experts</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </button>
             </motion.div>
           </div>
