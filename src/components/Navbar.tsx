@@ -36,7 +36,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
 
-      const sections = ['home', 'who-we-are', 'core-pillars', 'industries', 'partners', 'insights'];
+      const sections = ['home', 'who-we-are', 'core-pillars', 'industries', 'our-ecosystem', 'partners', 'insights'];
       const scrollPos = window.scrollY + 140;
 
       for (const section of sections) {
@@ -325,6 +325,24 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </button>
 
+          {/* Our Ecosystem */}
+          <button
+            onClick={() => scrollToSection('our-ecosystem')}
+            className={`relative px-3.5 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
+              isHome && activeSection === 'our-ecosystem' ? 'text-[#0055d4] font-semibold' : ''
+            }`}
+            id="nav-link-ecosystem"
+          >
+            Our Ecosystem
+            {isHome && activeSection === 'our-ecosystem' && (
+              <motion.div
+                layoutId="navUnderline"
+                className="absolute bottom-0 left-3.5 right-3.5 h-[2.5px] bg-[#0055d4] rounded-full"
+                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+              />
+            )}
+          </button>
+
           {/* Alliances */}
           <button
             onClick={() => scrollToSection('partners')}
@@ -420,6 +438,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="text-left font-semibold text-slate-800 text-[15px] py-2 border-b border-slate-100 hover:text-[#0055d4]"
               >
                 Values
+              </button>
+
+              <button
+                onClick={() => scrollToSection('our-ecosystem')}
+                className="text-left font-semibold text-slate-800 text-[15px] py-2 border-b border-slate-100 hover:text-[#0055d4]"
+              >
+                Our Ecosystem
               </button>
 
               <button

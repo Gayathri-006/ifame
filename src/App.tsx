@@ -6,6 +6,12 @@ import { VisionMissionSection } from './components/VisionMissionSection';
 import { ExpertiseStrip } from './components/ExpertiseStrip';
 import { IndustriesAndInsightsSection } from './components/IndustriesAndInsightsSection';
 import { CorePillarsSection } from './components/CorePillarsSection';
+import { EcosystemInitiativeSection } from './components/EcosystemInitiativeSection';
+import { SmartAgricultureSection } from './components/SmartAgricultureSection';
+import { RnDInnovationSection } from './components/RnDInnovationSection';
+import { LangkawiInnovationHubSection } from './components/LangkawiInnovationHubSection';
+import { InvestmentProjectDevelopmentSection } from './components/InvestmentProjectDevelopmentSection';
+import { OurEcosystemSection } from './components/OurEcosystemSection';
 import { InsightsEditorialSection } from './components/InsightsEditorialSection';
 import { PartnersSection } from './components/PartnersSection';
 import { FinalCTASection } from './components/FinalCTASection';
@@ -166,6 +172,26 @@ export default function App() {
 
         {/* 5.5. Our Core Pillars Section */}
         <CorePillarsSection />
+
+        {/* 5.6. MAITI Ecosystem Initiative */}
+        <EcosystemInitiativeSection />
+
+        {/* 5.7. Smart Agriculture & Agrofood */}
+        <SmartAgricultureSection />
+
+        {/* 5.8. R&D, Innovation & Technology */}
+        <RnDInnovationSection />
+
+        {/* 5.9. Langkawi Innovation Hub */}
+        <LangkawiInnovationHubSection
+          onOpenContact={() => handleOpenContact('Langkawi Innovation Hub')}
+        />
+
+        {/* 5.10. Investment & Project Development */}
+        <InvestmentProjectDevelopmentSection />
+
+        {/* 5.11. Our Ecosystem (stakeholder hub diagram) */}
+        <OurEcosystemSection />
 
         {/* 6. Our Partners / Alliances Section */}
         <PartnersSection />
