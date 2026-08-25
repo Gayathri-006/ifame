@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
-import { WhatWeDoSection } from './components/WhatWeDoSection';
+import { WhoWeAreSection } from './components/WhoWeAreSection';
+import { VisionMissionSection } from './components/VisionMissionSection';
 import { ExpertiseStrip } from './components/ExpertiseStrip';
 import { IndustriesAndInsightsSection } from './components/IndustriesAndInsightsSection';
-import { CaseStudySection } from './components/CaseStudySection';
+import { CorePillarsSection } from './components/CorePillarsSection';
 import { InsightsEditorialSection } from './components/InsightsEditorialSection';
 import { PartnersSection } from './components/PartnersSection';
 import { FinalCTASection } from './components/FinalCTASection';
@@ -18,14 +19,15 @@ import { CAPABILITIES } from './data/capabilities';
 import { INDUSTRIES } from './data/industries';
 import { ConsultingPillarId, ConsultingPillar, CapabilityItem, IndustryItem, InsightArticle } from './types';
 
+type ModalState =
+  { type: 'pillar'; data: ConsultingPillar } |
+  { type: 'capability'; data: CapabilityItem } |
+  { type: 'industry'; data: IndustryItem } |
+  { type: 'insight'; data: InsightArticle } |
+  null;
+
 export default function App() {
-  const [modalState, setModalState] = useState<
-    | { type: 'pillar'; data: ConsultingPillar }
-    | { type: 'capability'; data: CapabilityItem }
-    | { type: 'industry'; data: IndustryItem }
-    | { type: 'insight'; data: InsightArticle }
-    | null
-  >(null);
+  const [modalState, setModalState] = useState<ModalState>(null);
 
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const [contactTopic, setContactTopic] = useState('');
@@ -135,20 +137,22 @@ export default function App() {
         onSelectPillar={handleSelectPillar}
         onSelectCapability={handleSelectCapability}
         onSelectIndustry={handleSelectIndustry}
+        onNavigate={(section) => scrollTo(section)}
+        currentPage="home"
       />
 
       {/* 2. Main Hero Section (with Digital Wave Canvas) */}
       <main className="flex-1">
         <HeroSection
-          onExploreSolutions={() => scrollTo('what-we-do')}
+          onExploreSolutions={() => scrollTo('who-we-are')}
           onExploreExpertise={() => scrollTo('expertise')}
         />
 
-        {/* 3. What We Do Card Section (Elevated 4-Column Layout) */}
-        <WhatWeDoSection
-          onSelectPillar={handleSelectPillar}
-          onLearnMoreAboutUs={() => scrollTo('partners')}
-        />
+        {/* 3. Who We Are Section (Elevated Card, replaces old What We Do layout) */}
+        <WhoWeAreSection />
+
+        {/* 3.5. Vision & Mission Section (overlapping cards, dark brand background) */}
+        <VisionMissionSection />
 
         {/* 4. Our Expertise Strip (8 Strategic Capabilities) */}
         <ExpertiseStrip onSelectCapability={handleSelectCapability} />
@@ -160,20 +164,20 @@ export default function App() {
           onViewAllIndustries={() => scrollTo('industries')}
         />
 
-        {/* 6. Case Studies / Client Impact Section (Challenge -> Approach -> Transformation -> Outcome) */}
-        <CaseStudySection onContactUs={() => handleOpenContact('Case Study Strategy Session')} />
+        {/* 5.5. Our Core Pillars Section */}
+        <CorePillarsSection />
 
-        {/* 7. Our Partners / Alliances Section */}
+        {/* 6. Our Partners / Alliances Section */}
         <PartnersSection />
 
-        {/* 8. Thought Leadership / Insights & Perspectives Editorial Section */}
+        {/* 7. Thought Leadership / Insights & Perspectives Editorial Section */}
         <InsightsEditorialSection onSelectArticle={handleSelectArticle} />
 
-        {/* 9. Final CTA Section ("Let's discuss what's next.") */}
+        {/* 8. Final CTA Section ("Let's discuss what's next.") */}
         <FinalCTASection onOpenContact={() => handleOpenContact('Direct Consultation Request')} />
       </main>
 
-      {/* 10. Footer */}
+      {/* 9. Footer */}
       <Footer
         onSelectPillar={handleSelectPillar}
         onSelectIndustry={handleSelectIndustry}

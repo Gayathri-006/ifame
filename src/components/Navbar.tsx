@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronDown, ArrowRight, ArrowLeft, Menu, X, Users, Cpu, Network, ShieldCheck, TrendingUp, Sparkles, BrainCircuit, Cloud, Settings2, Activity, Box } from 'lucide-react';
+import { ChevronDown, ArrowRight, ArrowLeft, Menu, X } from 'lucide-react';
 import { Logo } from './Logo';
-import { CONSULTING_PILLARS } from '../data/services';
-import { CAPABILITIES } from '../data/capabilities';
 import { INDUSTRIES } from '../data/industries';
 import { ConsultingPillarId } from '../types';
 
@@ -28,7 +26,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const isHome = currentPage === 'home';
 
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<'what-we-do' | 'industries' | 'capabilities' | null>(null);
+  const [activeDropdown, setActiveDropdown] = useState<'industries' | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
@@ -38,7 +36,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
 
-      const sections = ['home', 'what-we-do', 'expertise', 'industries', 'partners', 'insights'];
+      const sections = ['home', 'who-we-are', 'core-pillars', 'industries', 'partners', 'insights'];
       const scrollPos = window.scrollY + 140;
 
       for (const section of sections) {
@@ -69,13 +67,24 @@ export const Navbar: React.FC<NavbarProps> = ({
   // reports the target section id to the parent (which navigates home,
   // e.g. via history.back() for the AgTech page), then polls for that
   // section to exist in the DOM and scrolls once it mounts.
+  // Scrolls to a section while compensating for the fixed navbar height,
+  // so the top of the target section (e.g. its eyebrow label) doesn't end
+  // up hidden underneath the header.
+  const scrollToWithOffset = (el: HTMLElement) => {
+    const header = document.getElementById('main-navigation-bar');
+    const headerHeight = header ? header.offsetHeight : 80;
+    const extraGap = 16; // small breathing room below the header
+    const top = el.getBoundingClientRect().top + window.scrollY - headerHeight - extraGap;
+    window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
+  };
+
   const scrollToSection = (sectionId: string) => {
     setActiveDropdown(null);
     setMobileMenuOpen(false);
 
     if (isHome) {
       const el = document.getElementById(sectionId);
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
+      if (el) scrollToWithOffset(el);
       return;
     }
 
@@ -84,7 +93,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     const tryScroll = () => {
       const el = document.getElementById(sectionId);
       if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
+        scrollToWithOffset(el);
       } else if (attempts < 30) {
         attempts += 1;
         requestAnimationFrame(tryScroll);
@@ -104,29 +113,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
     onNavigate('home');
     setTimeout(action, 80);
-  };
-
-  const getPillarIcon = (id: string) => {
-    switch (id) {
-      case 'management': return <Users className="w-5 h-5 text-[#0066ee]" />;
-      case 'technology': return <Cpu className="w-5 h-5 text-[#0066ee]" />;
-      case 'process': return <Network className="w-5 h-5 text-[#0066ee]" />;
-      default: return <Sparkles className="w-5 h-5 text-[#0066ee]" />;
-    }
-  };
-
-  const getCapabilityIcon = (iconName: string) => {
-    switch (iconName) {
-      case 'TrendingUp': return <TrendingUp className="w-4 h-4 text-[#0066ee]" />;
-      case 'Sparkles': return <Sparkles className="w-4 h-4 text-[#0066ee]" />;
-      case 'BrainCircuit': return <BrainCircuit className="w-4 h-4 text-[#0066ee]" />;
-      case 'ShieldCheck': return <ShieldCheck className="w-4 h-4 text-[#0066ee]" />;
-      case 'Cloud': return <Cloud className="w-4 h-4 text-[#0066ee]" />;
-      case 'Settings2': return <Settings2 className="w-4 h-4 text-[#0066ee]" />;
-      case 'Activity': return <Activity className="w-4 h-4 text-[#0066ee]" />;
-      case 'Box': return <Box className="w-4 h-4 text-[#0066ee]" />;
-      default: return <Sparkles className="w-4 h-4 text-[#0066ee]" />;
-    }
   };
 
   return (
@@ -182,59 +168,23 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </button>
 
-          {/* What We Do Dropdown */}
-          <div
-            className="relative"
-            onMouseEnter={() => setActiveDropdown('what-we-do')}
-            onMouseLeave={() => setActiveDropdown(null)}
+          {/* About Us */}
+          <button
+            onClick={() => scrollToSection('who-we-are')}
+            className={`relative px-3.5 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
+              isHome && activeSection === 'who-we-are' ? 'text-[#0055d4] font-semibold' : ''
+            }`}
+            id="nav-link-about-us"
           >
-            <button
-              onClick={() => scrollToSection('what-we-do')}
-              className={`flex items-center gap-1 px-3.5 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
-                isHome && activeSection === 'what-we-do' ? 'text-[#0055d4] font-semibold' : ''
-              }`}
-              id="nav-link-what-we-do"
-            >
-              What We Do
-              <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeDropdown === 'what-we-do' ? 'rotate-180 text-[#0055d4]' : 'text-slate-400'}`} />
-            </button>
-
-            <AnimatePresence>
-              {activeDropdown === 'what-we-do' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 6 }}
-                  transition={{ duration: 0.18 }}
-                  className="absolute top-full left-1/2 -translate-x-1/2 w-[720px] bg-white rounded-xl shadow-2xl border border-slate-100 p-6 grid grid-cols-3 gap-5 mt-1"
-                >
-                  {CONSULTING_PILLARS.map((pillar) => (
-                    <div
-                      key={pillar.id}
-                      onClick={() => runOnHome(() => onSelectPillar(pillar.id))}
-                      className="group p-3.5 rounded-lg hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all cursor-pointer flex flex-col justify-between"
-                      id={`nav-dropdown-${pillar.id}`}
-                    >
-                      <div>
-                        <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center mb-3 group-hover:bg-[#0055d4] group-hover:text-white transition-colors">
-                          {getPillarIcon(pillar.id)}
-                        </div>
-                        <h4 className="text-[14px] font-bold text-slate-900 group-hover:text-[#0055d4] transition-colors leading-snug">
-                          {pillar.title}
-                        </h4>
-                        <p className="text-[12px] text-slate-500 mt-1.5 line-clamp-2 leading-relaxed">
-                          {pillar.shortDesc}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-1 text-[11.5px] font-semibold text-[#0055d4] mt-3 group-hover:translate-x-1 transition-transform">
-                        Explore Scope <ArrowRight className="w-3 h-3" />
-                      </div>
-                    </div>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+            About Us
+            {isHome && activeSection === 'who-we-are' && (
+              <motion.div
+                layoutId="navUnderline"
+                className="absolute bottom-0 left-3.5 right-3.5 h-[2.5px] bg-[#0055d4] rounded-full"
+                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+              />
+            )}
+          </button>
 
           {/* Industries Dropdown (Enlarged Mega-Box) */}
           <div
@@ -357,59 +307,23 @@ export const Navbar: React.FC<NavbarProps> = ({
             </AnimatePresence>
           </div>
 
-          {/* Capabilities Dropdown */}
-          <div
-            className="relative"
-            onMouseEnter={() => setActiveDropdown('capabilities')}
-            onMouseLeave={() => setActiveDropdown(null)}
+          {/* Values */}
+          <button
+            onClick={() => scrollToSection('core-pillars')}
+            className={`relative px-3.5 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
+              isHome && activeSection === 'core-pillars' ? 'text-[#0055d4] font-semibold' : ''
+            }`}
+            id="nav-link-values"
           >
-            <button
-              onClick={() => scrollToSection('expertise')}
-              className={`flex items-center gap-1 px-3.5 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
-                isHome && activeSection === 'expertise' ? 'text-[#0055d4] font-semibold' : ''
-              }`}
-              id="nav-link-capabilities"
-            >
-              Capabilities
-              <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeDropdown === 'capabilities' ? 'rotate-180 text-[#0055d4]' : 'text-slate-400'}`} />
-            </button>
-
-            <AnimatePresence>
-              {activeDropdown === 'capabilities' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 6 }}
-                  transition={{ duration: 0.18 }}
-                  className="absolute top-full left-1/2 -translate-x-1/2 w-[760px] bg-white rounded-xl shadow-2xl border border-slate-100 p-6 grid grid-cols-2 gap-3 mt-1"
-                >
-                  {CAPABILITIES.map((cap) => (
-                    <div
-                      key={cap.id}
-                      onClick={() => {
-                        setActiveDropdown(null);
-                        onSelectCapability(cap.id);
-                      }}
-                      className="group flex items-start gap-3 p-3 rounded-lg hover:bg-blue-50/50 border border-transparent hover:border-blue-100 transition-colors cursor-pointer"
-                      id={`nav-cap-${cap.id}`}
-                    >
-                      <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center shrink-0 group-hover:bg-[#0055d4] group-hover:text-white transition-colors">
-                        {getCapabilityIcon(cap.iconName)}
-                      </div>
-                      <div>
-                        <h4 className="text-[13px] font-bold text-slate-900 group-hover:text-[#0055d4] transition-colors">
-                          {cap.title}
-                        </h4>
-                        <p className="text-[11.5px] text-slate-500 mt-0.5 line-clamp-1">
-                          {cap.shortDesc}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+            Values
+            {isHome && activeSection === 'core-pillars' && (
+              <motion.div
+                layoutId="navUnderline"
+                className="absolute bottom-0 left-3.5 right-3.5 h-[2.5px] bg-[#0055d4] rounded-full"
+                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+              />
+            )}
+          </button>
 
           {/* Alliances */}
           <button
@@ -475,21 +389,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                 Home
               </button>
 
-              <div>
-                <div className="text-xs uppercase font-bold tracking-wider text-slate-400 mb-2">What We Do</div>
-                <div className="space-y-2 pl-2">
-                  {CONSULTING_PILLARS.map((p) => (
-                    <button
-                      key={p.id}
-                      onClick={() => runOnHome(() => onSelectPillar(p.id))}
-                      className="w-full text-left text-sm font-medium text-slate-700 hover:text-[#0055d4] py-1 flex items-center justify-between"
-                    >
-                      <span>{p.title}</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                    </button>
-                  ))}
-                </div>
-              </div>
+              <button
+                onClick={() => scrollToSection('who-we-are')}
+                className="text-left font-semibold text-slate-800 text-[15px] py-2 border-b border-slate-100 hover:text-[#0055d4]"
+              >
+                About Us
+              </button>
 
               <div>
                 <div className="text-xs uppercase font-bold tracking-wider text-slate-400 mb-2">Industries</div>
@@ -511,10 +416,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
 
               <button
-                onClick={() => scrollToSection('expertise')}
+                onClick={() => scrollToSection('core-pillars')}
                 className="text-left font-semibold text-slate-800 text-[15px] py-2 border-b border-slate-100 hover:text-[#0055d4]"
               >
-                Capabilities & Expertise
+                Values
               </button>
 
               <button
