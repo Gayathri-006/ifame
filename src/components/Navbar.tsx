@@ -43,7 +43,6 @@ export const Navbar: React.FC<NavbarProps> = ({
         'industries',
         'our-ecosystem',
         'partners',
-        'insights',
       ];
 
       const scrollPos = window.scrollY + 140;
@@ -508,19 +507,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             id="nav-link-alliances"
           >
             Alliances
-          </button>
-
-          {/* ================= INSIGHTS ================= */}
-          <button
-            onClick={() => scrollToSection('insights')}
-            className={`relative whitespace-nowrap px-3 py-2 transition-colors hover:text-[#0055d4] cursor-pointer ${
-              isHome && activeSection === 'insights'
-                ? 'text-[#0055d4] font-semibold'
-                : ''
-            }`}
-            id="nav-link-insights"
-          >
-            Insights
           </button>
         </nav>
       </div>

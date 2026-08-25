@@ -12,7 +12,6 @@ import { RnDInnovationSection } from './components/RnDInnovationSection';
 import { LangkawiInnovationHubSection } from './components/LangkawiInnovationHubSection';
 import { InvestmentProjectDevelopmentSection } from './components/InvestmentProjectDevelopmentSection';
 import { OurEcosystemSection } from './components/OurEcosystemSection';
-import { InsightsEditorialSection } from './components/InsightsEditorialSection';
 import { PartnersSection } from './components/PartnersSection';
 import { FinalCTASection } from './components/FinalCTASection';
 import { Footer } from './components/Footer';
@@ -23,13 +22,12 @@ import { AgriTechPage } from './agritech/pages/AgriTechPage';
 import { CONSULTING_PILLARS } from './data/services';
 import { CAPABILITIES } from './data/capabilities';
 import { INDUSTRIES } from './data/industries';
-import { ConsultingPillarId, ConsultingPillar, CapabilityItem, IndustryItem, InsightArticle } from './types';
+import { ConsultingPillarId, ConsultingPillar, CapabilityItem, IndustryItem } from './types';
 
 type ModalState =
   { type: 'pillar'; data: ConsultingPillar } |
   { type: 'capability'; data: CapabilityItem } |
   { type: 'industry'; data: IndustryItem } |
-  { type: 'insight'; data: InsightArticle } |
   null;
 
 export default function App() {
@@ -114,10 +112,6 @@ export default function App() {
     }
   };
 
-  const handleSelectArticle = (article: InsightArticle) => {
-    setModalState({ type: 'insight', data: article });
-  };
-
   // While the AgTech page is active, it fully replaces the main site (its own
   // navbar/footer included). Every "go home" action from within it — nav
   // links, the back arrow, the logo, the Chrome back button — funnels
@@ -196,14 +190,11 @@ export default function App() {
         {/* 6. Our Partners / Alliances Section */}
         <PartnersSection />
 
-        {/* 7. Thought Leadership / Insights & Perspectives Editorial Section */}
-        <InsightsEditorialSection onSelectArticle={handleSelectArticle} />
-
-        {/* 8. Final CTA Section ("Let's discuss what's next.") */}
+        {/* 7. Final CTA Section ("Let's discuss what's next.") */}
         <FinalCTASection onOpenContact={() => handleOpenContact('Direct Consultation Request')} />
       </main>
 
-      {/* 9. Footer */}
+      {/* 8. Footer */}
       <Footer
         onSelectPillar={handleSelectPillar}
         onSelectIndustry={handleSelectIndustry}
@@ -211,7 +202,7 @@ export default function App() {
         onOpenContact={() => handleOpenContact('Consultation Desk')}
       />
 
-      {/* Detail Deep-Dive Modal (Pillar, Capability, Industry, Insight Article) */}
+      {/* Detail Deep-Dive Modal (Pillar, Capability, Industry) */}
       <DetailModal
         content={modalState}
         onClose={() => setModalState(null)}
