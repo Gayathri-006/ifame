@@ -87,7 +87,7 @@ export const WhoWeAreSection: React.FC = () => {
         </motion.div>
 
         {/* Pillars row */}
-        <div className="mt-6 pt-5 border-t border-slate-100 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-y-6 gap-x-4">
+        <div className="mt-6 pt-5 border-t border-slate-100 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-6 gap-x-4">
           {CORE_PILLARS.map((pillar, idx) => {
             const Icon = pillar.icon;
             return (

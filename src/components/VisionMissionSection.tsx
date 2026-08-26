@@ -29,11 +29,11 @@ export const VisionMissionSection: React.FC = () => {
           className="relative scroll-mt-24"
         >
           <div
-            className="absolute top-1/2 left-0 -translate-y-1/2 w-[42vw] max-w-[520px] h-[85%] bg-[#e8b4bc]/50 rounded-r-full pointer-events-none"
+            className="absolute top-1/2 left-0 -translate-y-1/2 w-[70vw] sm:w-[55vw] md:w-[42vw] max-w-[520px] h-[70%] md:h-[85%] bg-[#e8b4bc]/50 rounded-r-full pointer-events-none"
             aria-hidden="true"
           />
 
-          <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-8 grid grid-cols-1 md:grid-cols-[280px_1fr] gap-10 md:gap-16 items-center">
+          <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-8 grid grid-cols-1 md:grid-cols-[240px_1fr] lg:grid-cols-[280px_1fr] gap-10 md:gap-12 lg:gap-16 items-center">
 
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -43,7 +43,7 @@ export const VisionMissionSection: React.FC = () => {
                 duration: 0.55,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="relative w-[240px] h-[240px] md:w-[280px] md:h-[280px] mx-auto md:mx-0"
+              className="relative w-[200px] h-[200px] sm:w-[240px] sm:h-[240px] md:w-[260px] md:h-[260px] lg:w-[280px] lg:h-[280px] mx-auto md:mx-0"
             >
               <div
                 className="relative w-full h-full shadow-xl overflow-hidden"
@@ -94,11 +94,11 @@ export const VisionMissionSection: React.FC = () => {
           className="relative scroll-mt-24"
         >
           <div
-            className="absolute top-1/2 right-0 -translate-y-1/2 w-[42vw] max-w-[520px] h-[85%] bg-[#a8d4d8]/50 rounded-l-full pointer-events-none"
+            className="absolute top-1/2 right-0 -translate-y-1/2 w-[70vw] sm:w-[55vw] md:w-[42vw] max-w-[520px] h-[70%] md:h-[85%] bg-[#a8d4d8]/50 rounded-l-full pointer-events-none"
             aria-hidden="true"
           />
 
-          <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-8 grid grid-cols-1 md:grid-cols-[1fr_280px] gap-10 md:gap-16 items-center">
+          <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-8 grid grid-cols-1 md:grid-cols-[1fr_240px] lg:grid-cols-[1fr_280px] gap-10 md:gap-12 lg:gap-16 items-center">
 
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -139,7 +139,7 @@ export const VisionMissionSection: React.FC = () => {
                 delay: 0.1,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="relative w-[240px] h-[240px] md:w-[280px] md:h-[280px] mx-auto md:mx-0 md:order-2"
+              className="relative w-[200px] h-[200px] sm:w-[240px] sm:h-[240px] md:w-[260px] md:h-[260px] lg:w-[280px] lg:h-[280px] mx-auto md:mx-0 md:order-2"
             >
               <div
                 className="relative w-full h-full shadow-xl overflow-hidden"

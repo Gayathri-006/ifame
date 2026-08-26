@@ -27,7 +27,7 @@ export const SmartAgricultureSection: React.FC = () => {
         }}
       />
 
-      <div className="relative max-w-7xl mx-auto px-6 md:px-8 grid lg:grid-cols-[0.9fr_1.1fr] gap-16 lg:gap-8 items-center">
+      <div className="relative max-w-7xl mx-auto px-6 md:px-8 grid md:grid-cols-[0.9fr_1.1fr] gap-16 md:gap-8 items-center">
         {/* Copy column */}
         <div>
           <motion.p

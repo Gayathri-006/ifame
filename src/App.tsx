@@ -65,11 +65,27 @@ export default function App() {
     }
   };
 
+  // Scrolls to a section while accounting for the height of the fixed navbar
+  // (plus a small breathing-room gap), so the section's own heading lands
+  // just below the navbar instead of underneath it or too far down the page.
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (!el) return;
+
+    const header = document.getElementById('main-navigation-bar');
+    const headerHeight = header ? header.offsetHeight : 80;
+    const extraGap = 16;
+
+    const top =
+      el.getBoundingClientRect().top +
+      window.scrollY -
+      headerHeight -
+      extraGap;
+
+    window.scrollTo({
+      top: Math.max(top, 0),
+      behavior: 'smooth',
+    });
   };
 
   // Leaving the AgTech page always goes through this single path, so the

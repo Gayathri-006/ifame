@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronDown, ArrowRight, ArrowLeft } from 'lucide-react';
+import { ChevronDown, ArrowRight, ArrowLeft, Menu, X } from 'lucide-react';
 import { Logo } from './Logo';
 import { INDUSTRIES } from '../data/industries';
 import { ConsultingPillarId } from '../types';
@@ -27,6 +27,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     null
   );
   const [activeSection, setActiveSection] = useState('home');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mobileIndustriesOpen, setMobileIndustriesOpen] = useState(false);
 
   useEffect(() => {
     if (!isHome) return;
@@ -77,6 +79,33 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
   }, [isHome]);
 
+  // Lock background scroll while the mobile menu is open.
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      const previousOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+
+      return () => {
+        document.body.style.overflow = previousOverflow;
+      };
+    }
+  }, [isMobileMenuOpen]);
+
+  // Close the mobile menu automatically if the viewport grows past the
+  // mobile/tablet breakpoint (e.g. rotating a tablet or resizing a window).
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsMobileMenuOpen(false);
+        setMobileIndustriesOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   /*
    * Scroll to a section while accounting for
    * the fixed navbar height.
@@ -104,6 +133,8 @@ export const Navbar: React.FC<NavbarProps> = ({
    */
   const scrollToSection = (sectionId: string) => {
     setActiveDropdown(null);
+    setIsMobileMenuOpen(false);
+    setMobileIndustriesOpen(false);
 
     if (isHome) {
       const el = document.getElementById(sectionId);
@@ -133,6 +164,20 @@ export const Navbar: React.FC<NavbarProps> = ({
     requestAnimationFrame(tryScroll);
   };
 
+  const handleMobileIndustrySelect = (indId: string) => {
+    setActiveDropdown(null);
+    setIsMobileMenuOpen(false);
+    setMobileIndustriesOpen(false);
+    onSelectIndustry(indId);
+  };
+
+  const MOBILE_LINKS: { id: string; label: string }[] = [
+    { id: 'home', label: 'Home' },
+    { id: 'who-we-are', label: 'About Us' },
+    { id: 'vision', label: 'Vision' },
+    { id: 'mission', label: 'Mission' },
+  ];
+
   return (
     <header
       id="main-navigation-bar"
@@ -160,7 +205,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           Logo stays on the left.
           Navigation stays centered.
          ========================================================= */}
-      <div className="relative max-w-7xl mx-auto px-6 md:px-8 flex items-center">
+      <div className="relative max-w-7xl mx-auto px-6 md:px-8 flex items-center justify-between">
         {/* ================= LOGO ================= */}
         <button
           onClick={() => scrollToSection('home')}
@@ -509,7 +554,194 @@ export const Navbar: React.FC<NavbarProps> = ({
             Alliances
           </button>
         </nav>
+
+        {/* ================= MOBILE / TABLET HAMBURGER TOGGLE ================= */}
+        <button
+          type="button"
+          onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+          aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={isMobileMenuOpen}
+          aria-controls="mobile-nav-panel"
+          id="nav-mobile-toggle-btn"
+          className="lg:hidden w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-slate-200 flex items-center justify-center text-slate-700 hover:text-slate-950 hover:border-slate-400 hover:bg-slate-50 transition-all cursor-pointer shrink-0"
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            {isMobileMenuOpen ? (
+              <motion.span
+                key="close-icon"
+                initial={{ opacity: 0, rotate: -90 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                exit={{ opacity: 0, rotate: 90 }}
+                transition={{ duration: 0.18 }}
+                className="flex"
+              >
+                <X className="w-5 h-5" />
+              </motion.span>
+            ) : (
+              <motion.span
+                key="menu-icon"
+                initial={{ opacity: 0, rotate: 90 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                exit={{ opacity: 0, rotate: -90 }}
+                transition={{ duration: 0.18 }}
+                className="flex"
+              >
+                <Menu className="w-5 h-5" />
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </button>
       </div>
+
+      {/* ================= MOBILE / TABLET MENU PANEL ================= */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            {/* Dim backdrop over page content below the header */}
+            <motion.div
+              key="mobile-nav-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 top-full bg-slate-950/30 lg:hidden"
+              style={{ zIndex: 40 }}
+              aria-hidden="true"
+            />
+
+            <motion.div
+              key="mobile-nav-panel"
+              id="mobile-nav-panel"
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:hidden absolute top-full left-0 right-0 bg-white border-b border-slate-100 shadow-xl shadow-slate-900/10 z-50 max-h-[calc(100vh-72px)] overflow-y-auto"
+            >
+              <nav className="max-w-7xl mx-auto px-6 md:px-8 py-4 flex flex-col text-[15px] font-medium text-slate-700">
+                {MOBILE_LINKS.map((link) => {
+                  const isActive = isHome && activeSection === link.id;
+                  return (
+                    <button
+                      key={link.id}
+                      onClick={() => scrollToSection(link.id)}
+                      id={`nav-mobile-link-${link.id}`}
+                      className={`w-full text-left py-3.5 border-b border-slate-100 transition-colors cursor-pointer ${
+                        isActive ? 'text-[#0055d4] font-semibold' : 'hover:text-[#0055d4]'
+                      }`}
+                    >
+                      {link.label}
+                    </button>
+                  );
+                })}
+
+                {/* ================= INDUSTRIES (accordion) ================= */}
+                <div className="border-b border-slate-100">
+                  <button
+                    onClick={() => setMobileIndustriesOpen((prev) => !prev)}
+                    aria-expanded={mobileIndustriesOpen}
+                    id="nav-mobile-link-industries"
+                    className={`w-full flex items-center justify-between py-3.5 transition-colors cursor-pointer ${
+                      isHome && activeSection === 'industries'
+                        ? 'text-[#0055d4] font-semibold'
+                        : 'hover:text-[#0055d4]'
+                    }`}
+                  >
+                    <span>Industries</span>
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform duration-200 ${
+                        mobileIndustriesOpen ? 'rotate-180 text-[#0055d4]' : 'text-slate-400'
+                      }`}
+                    />
+                  </button>
+
+                  <AnimatePresence>
+                    {mobileIndustriesOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                        className="overflow-hidden"
+                      >
+                        <div className="pb-3.5 flex flex-col gap-2">
+                          <button
+                            onClick={() => scrollToSection('industries')}
+                            className="text-left text-xs font-bold text-[#0055d4] flex items-center gap-1 cursor-pointer py-1"
+                          >
+                            <span>View All Industries</span>
+                            <ArrowRight className="w-3.5 h-3.5" />
+                          </button>
+
+                          {INDUSTRIES.map((ind) => (
+                            <button
+                              key={ind.id}
+                              onClick={() => handleMobileIndustrySelect(ind.id)}
+                              id={`nav-mobile-ind-${ind.id}`}
+                              className="text-left rounded-xl border border-slate-200/80 bg-slate-50/50 hover:border-blue-300 hover:bg-white transition-colors cursor-pointer px-3.5 py-3 flex items-center gap-3"
+                            >
+                              <img
+                                src={ind.imageUrl}
+                                alt=""
+                                className="w-11 h-11 rounded-lg object-cover shrink-0"
+                              />
+                              <span className="min-w-0">
+                                <span className="block text-sm font-bold text-slate-900 truncate">
+                                  {ind.name}
+                                </span>
+                                <span className="block text-[11.5px] text-slate-500 truncate">
+                                  {ind.tagline}
+                                </span>
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                <button
+                  onClick={() => scrollToSection('core-pillars')}
+                  id="nav-mobile-link-values"
+                  className={`w-full text-left py-3.5 border-b border-slate-100 transition-colors cursor-pointer ${
+                    isHome && activeSection === 'core-pillars'
+                      ? 'text-[#0055d4] font-semibold'
+                      : 'hover:text-[#0055d4]'
+                  }`}
+                >
+                  Values
+                </button>
+
+                <button
+                  onClick={() => scrollToSection('our-ecosystem')}
+                  id="nav-mobile-link-ecosystem"
+                  className={`w-full text-left py-3.5 border-b border-slate-100 transition-colors cursor-pointer ${
+                    isHome && activeSection === 'our-ecosystem'
+                      ? 'text-[#0055d4] font-semibold'
+                      : 'hover:text-[#0055d4]'
+                  }`}
+                >
+                  Our Ecosystem
+                </button>
+
+                <button
+                  onClick={() => scrollToSection('partners')}
+                  id="nav-mobile-link-alliances"
+                  className={`w-full text-left py-3.5 transition-colors cursor-pointer ${
+                    isHome && activeSection === 'partners'
+                      ? 'text-[#0055d4] font-semibold'
+                      : 'hover:text-[#0055d4]'
+                  }`}
+                >
+                  Alliances
+                </button>
+              </nav>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   );
 };
