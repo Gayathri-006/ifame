@@ -1,5 +1,5 @@
 import React from 'react';
-import logoImage from '../assets/images/logo.png';
+import logoImage from '../assets/images/logo.webp';
 
 interface LogoProps {
   variant?: 'light' | 'dark';
@@ -17,8 +17,6 @@ export const Logo: React.FC<LogoProps> = ({
     lg: 72
   }[size];
 
-  // How far to push the logo down inside its box, in px.
-  // Increase this if it's still poking out the top.
   const nudgeDown = 5;
 
   return (
@@ -30,6 +28,9 @@ export const Logo: React.FC<LogoProps> = ({
       <img
         src={logoImage}
         alt="IFAME Consulting Logo"
+        loading="eager"
+        fetchPriority="high"
+        decoding="async"
         style={{
           height: heights,
           width: 'auto',
